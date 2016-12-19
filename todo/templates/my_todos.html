@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todos</title>
+</head>
+<body>
+
+{% if request.user.username %}
+    <h1>Welcome {{ request.user.username }}</h1>
+    <a href="/users/logout">Logout</a>
+{% endif %}
+
+<ol>
+    {% for todo in todos %}
+        <li>
+            <h1>{{ todo.name }}</h1>
+            <p>{{ todo.description }}</p>
+            {% for tag in todo.tags.all %}
+                {{ tag.name }}
+            {% endfor  %}
+        </li>
+    {% endfor %}
+</ol>
+
+
+<form method="POST">
+    {% csrf_token %}
+    <input name="todo_name">
+    <input name="description_name">
+    <select name="tag_names" multiple>
+        {% for tag in tags %}
+            <option value="{{ tag.id }}" >{{ tag.name }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Submit</button>
+</form>
+
+
+</body>
+</html>
