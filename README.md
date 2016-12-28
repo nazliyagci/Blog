@@ -1,1 +1,1 @@
-https://github.com/nazliyagci/Blog
+git
