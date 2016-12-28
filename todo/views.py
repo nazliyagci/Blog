@@ -8,19 +8,24 @@ from django.shortcuts import render
 
 from tags.models import Tag
 from .models import Todo
+from .forms import TodoForm
 
 def show_todo(request):
 
     if request.method == "POST":
-        todo = Todo.objects.create(name=request.POST.get("todo_name"),
-                            description=request.POST.get("description_name"),
-                            owner=request.user)
+        form = TodoForm(request.POST)
+        if form.is_valid():
+            todo = form.save(commit=False)
+            todo.owner = request.user
+            todo.save()
+            form.save_m2m()
 
-        todo.tags.add(*request.POST.getlist("tag_names"))
-
+    elif request.method == "GET":
+        form = TodoForm()
 
     return render(request, "my_todos.html", {"todos": Todo.objects.filter(owner=request.user.id),
-                                             "tags":Tag.objects.all()})
+                                             "tags":Tag.objects.all(),
+                                             "form": form})
 
 
 def get_todo(request, todo_id):

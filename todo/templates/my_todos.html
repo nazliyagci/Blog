@@ -26,14 +26,7 @@
 
 <form method="POST">
     {% csrf_token %}
-    <input name="todo_name">
-    <input name="description_name">
-    <select name="tag_names" multiple>
-        {% for tag in tags %}
-            <option value="{{ tag.id }}" >{{ tag.name }}</option>
-        {% endfor %}
-    </select>
-
+    {{ form }}
     <button type="submit">Submit</button>
 </form>
 

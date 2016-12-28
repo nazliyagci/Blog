@@ -8,19 +8,24 @@ from django.shortcuts import render
 
 from tags.models import Tag
 from .models import Entries
+from .forms import EntriesForm
 
 def show_entries(request):
 
     if request.method == "POST":
-        entry = Entries.objects.create(name=request.POST.get("entry_name"),
-                            description=request.POST.get("description_name"),
-                            owner=request.user)
+        form = EntriesForm(request.POST)
+        if form.is_valid():
+            entry = form.save(commit=False)
+            entry.owner = request.user
+            entry.save()
+            form.save_m2m()
 
-        entry.tags.add(*request.POST.getlist("tag_names"))
-
+    elif request.method == "GET":
+        form = EntriesForm()
 
     return render(request, "my_entries.html", {"entries": Entries.objects.filter(owner=request.user.id),
-                                             "tags":Tag.objects.all()})
+                                             "tags":Tag.objects.all(),
+                                              "form":form })
 
 
 def get_entries(request, entry_id):

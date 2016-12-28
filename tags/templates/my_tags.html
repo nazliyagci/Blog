@@ -23,7 +23,8 @@
 
 <form method="POST">
     {% csrf_token %}
-    <input name="tag_name">
+
+    {{ form }}
 
     <button type="submit">Submit</button>
 </form>

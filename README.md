@@ -1,1 +1,1 @@
-"# Blog Uygulamasi" 
+https://github.com/nazliyagci/Blog
